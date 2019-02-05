@@ -72,10 +72,9 @@ int main(int argc, char** argv ){
 	
 	double L = S1*mult; 
 
-	double ck;
+	A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
 	start_counter();
-
-	/* Poñer aquí o código a medir */
+	
 
 	ck=get_counter();
 
@@ -84,5 +83,7 @@ int main(int argc, char** argv ){
 	/* Esta rutina imprime a frecuencia de reloxo estimada coas rutinas start_counter/get_counter */
 	mhz(1,1);
 
+
+	_mm_free(A);
 	return EXIT_SUCCESS;
 }
