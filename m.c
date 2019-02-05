@@ -3,6 +3,11 @@
 #include <pmmintrin.h>
 
 
+#define S1 512
+#define S2 4096
+#define D 1
+#define mult 0.5
+
 void start_counter();
 double get_counter();
 double mhz();
@@ -17,13 +22,12 @@ double mhz();
 
  /* Set *hi and *lo to the high and low order bits of the cycle counter.
  Implementation requires assembly code to use the rdtsc instruction. */
- void access_counter(unsigned *hi, unsigned *lo)
- {
+ void access_counter(unsigned *hi, unsigned *lo){
  	asm("rdtsc; movl %%edx,%0; movl %%eax,%1" /* Read cycle counter */
  	: "=r" (*hi), "=r" (*lo) /* and move results to */
  	: /* No input */ /* the two outputs */
  	: "%edx", "%eax");
- }
+}
 
  /* Record the current value of the cycle counter. */
  void start_counter(){
@@ -57,7 +61,7 @@ double mhz(int verbose, int sleeptime){
 	 sleep(sleeptime);
 	 rate = get_counter() / (1e6*sleeptime);
 	 if (verbose)
-	 printf("\n Processor clock rate = %.1f MHz\n", rate);
+	 	printf("\n Processor clock rate = %.1f MHz\n", rate);
 	 return rate;
  }
 
@@ -66,6 +70,8 @@ double mhz(int verbose, int sleeptime){
 
 int main(int argc, char** argv ){
 	
+	double L = S1*mult; 
+
 	double ck;
 	start_counter();
 
@@ -78,7 +84,5 @@ int main(int argc, char** argv ){
 	/* Esta rutina imprime a frecuencia de reloxo estimada coas rutinas start_counter/get_counter */
 	mhz(1,1);
 
-
- 
 	return EXIT_SUCCESS;
 }
