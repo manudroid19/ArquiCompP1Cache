@@ -89,10 +89,17 @@ int main(int argc, char** argv ){
   }
 	start_counter();
 
-  
+  for(int i=0;i<10;i++){
+    S[i]=0;
+    for(int j=0;j<R;j++){
+      S[i]=S[i]+A[E[i]];
+    }
+  }
 
 	double ck=get_counter();
-
+  for(int i=0;i<10;i++){
+    printf("S[%d]=%lf\n",i,S[i]);
+  }
 	printf("\n Clocks=%1.10lf \n",ck);
 
 	/* Esta rutina imprime a frecuencia de reloxo estimada coas rutinas start_counter/get_counter */
