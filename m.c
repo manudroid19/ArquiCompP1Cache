@@ -3,6 +3,8 @@
 #include <pmmintrin.h>
 #include <time.h>
 #include <unistd.h>
+#include <float.h>
+#include <math.h>
 
 #define S1 512
 #define S2 4096
@@ -10,6 +12,8 @@
 void start_counter();
 double get_counter();
 double mhz();
+double geometricMean(double arr[], int n);
+
 
 
 /* Initialize the cycle counter */
@@ -60,7 +64,7 @@ double mhz(int verbose, int sleeptime){
 	 sleep(sleeptime);
 	 rate = get_counter() / (1e6*sleeptime);
 	 if (verbose)
-	 	printf("\n Processor clock rate = %.1f MHz\n", rate);
+	 	printf("%.1f\n", rate);
 	 return rate;
  }
 
@@ -87,20 +91,32 @@ int main(int argc, char** argv ){
   for(int i=0;i<R;i++){
     E[i]=D*i;
   }
-	start_counter();
-
+  double mejores[3]={DBL_MAX,DBL_MAX,DBL_MAX};
   for(int i=0;i<10;i++){
     S[i]=0;
+    start_counter();
     for(int j=0;j<R;j++){
       S[i]=S[i]+A[E[i]];
     }
+    double ck=get_counter();
+    if(ck<mejores[0]){
+      mejores[2]=mejores[1];
+      mejores[1]=mejores[0];
+      mejores[0]=ck;
+    }else if(ck<mejores[1]){
+      mejores[2]=mejores[1];
+      mejores[1]=ck;
+    }else if(ck<mejores[2]){
+      mejores[2]=ck;
+    }
   }
+  double gm = geometricMean(mejores,3);
+  printf("%d\t%d\t%lf\t",L,D, gm);
 
-	double ck=get_counter();
   for(int i=0;i<10;i++){
-    printf("S[%d]=%lf\n",i,S[i]);
+    fprintf(stderr, "S[%d]=%lf\n",i,S[i]);
   }
-	printf("\n Clocks=%1.10lf \n",ck);
+	//printf("\n Clocks=%1.10lf \n",ck);
 
 	/* Esta rutina imprime a frecuencia de reloxo estimada coas rutinas start_counter/get_counter */
 	mhz(1,1);
@@ -108,4 +124,20 @@ int main(int argc, char** argv ){
 
 	_mm_free(A);
 	return EXIT_SUCCESS;
+}
+double geometricMean(double arr[], int n) {
+    // declare product variable and
+    // initialize it to 1.
+    double product = 1;
+
+    // Compute the product of all the
+    // elements in the array.
+    for (int i = 0; i < n; i++)
+        product = product * arr[i];
+
+    // compute geometric mean through formula
+    // pow(product, 1/n) and return the value
+    // to main function.
+    double gm = pow(product, (double)1 / n);
+    return gm;
 }
