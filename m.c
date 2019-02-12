@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pmmintrin.h>
-
+#include <time.h>
+#include <unistd.h>
 
 #define S1 512
 #define S2 4096
-#define D 1
-#define mult 0.5
 
 void start_counter();
 double get_counter();
@@ -69,14 +68,30 @@ double mhz(int verbose, int sleeptime){
 
 
 int main(int argc, char** argv ){
-	
-	double L = S1*mult; 
+  int L,D;
+  if(argc > 1){
+    L = atoi(argv[1]);
+    D = atoi(argv[2]);
+  }else
+    exit(0);
+  int R= (L*64-8+16*D)/(8*D);
+	double *A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
 
-	A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
+  srand ( time ( NULL));
+  for(int i=0;i<(R-1)*D+1;i++)
+    A[i]=(double)rand()/RAND_MAX+1.0;
+
+
+  double S[10];
+  int E[R];
+  for(int i=0;i<R;i++){
+    E[i]=D*i;
+  }
 	start_counter();
-	
 
-	ck=get_counter();
+  
+
+	double ck=get_counter();
 
 	printf("\n Clocks=%1.10lf \n",ck);
 
