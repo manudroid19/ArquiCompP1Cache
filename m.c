@@ -8,7 +8,7 @@
 
 #define S1 512
 #define S2 4096
-
+#define N 1000
 void start_counter();
 double get_counter();
 double mhz();
@@ -86,19 +86,20 @@ int main(int argc, char** argv ){
     A[i]=(double)rand()/RAND_MAX+1.0;
 
 
-  double S[10];
+  double S[N];
   int E[R];
   for(int i=0;i<R;i++){
     E[i]=D*i;
   }
   double mejores[3]={DBL_MAX,DBL_MAX,DBL_MAX};
-  for(int i=0;i<10;i++){
+  for(int i=0;i<N;i++){
     S[i]=0;
     start_counter();
     for(int j=0;j<R;j++){
       S[i]=S[i]+A[E[j]];
     }
     double ck=get_counter()/R;
+    fprintf(stderr, "ck[%d]=%lf\n",i,ck);
     if(ck<mejores[0]){
       mejores[2]=mejores[1];
       mejores[1]=mejores[0];
@@ -113,7 +114,7 @@ int main(int argc, char** argv ){
   double gm = geometricMean(mejores,3);
   printf("%d\t%d\t%lf\t",L,D, gm);
 
-  for(int i=0;i<10;i++){
+  for(int i=0;i<N;i++){
     fprintf(stderr, "S[%d]=%lf\n",i,S[i]);
   }
 	//printf("\n Clocks=%1.10lf \n",ck);
