@@ -99,6 +99,7 @@ int main(int argc, char** argv ){
       S[i]=S[i]+A[E[j]];
     }
     double ck=get_counter()/R;
+    fprintf(stderr, "ck[%d]=%lf\n",i,ck);
     if(ck<mejores[0]){
       mejores[2]=mejores[1];
       mejores[1]=mejores[0];
