@@ -96,9 +96,9 @@ int main(int argc, char** argv ){
     S[i]=0;
     start_counter();
     for(int j=0;j<R;j++){
-      S[i]=S[i]+A[E[i]];
+      S[i]=S[i]+A[E[j]];
     }
-    double ck=get_counter();
+    double ck=get_counter()/R;
     if(ck<mejores[0]){
       mejores[2]=mejores[1];
       mejores[1]=mejores[0];
