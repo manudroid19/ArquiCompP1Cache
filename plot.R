@@ -14,3 +14,4 @@ for (value in unique(datos$D)){
 legend("topleft", legend=rev(paste("D =",unique(datos$D))),
        col=rev(colors), lty=1, cex=1.5, lwd=3, title="Colores: Valores de D",inset=.01,text.font=3)
 
+
