@@ -8,7 +8,7 @@
 
 #define S1 512
 #define S2 4096
-#define N 1000
+#define N 3
 void start_counter();
 double get_counter();
 double mhz();
@@ -64,7 +64,7 @@ double mhz(int verbose, int sleeptime){
 	 sleep(sleeptime);
 	 rate = get_counter() / (1e6*sleeptime);
 	 if (verbose)
-	 	printf("%.1f\n", rate);
+	 	printf("%.1f\t", rate);
 	 return rate;
  }
 
@@ -79,7 +79,7 @@ int main(int argc, char** argv ){
   }else
     exit(0);
   int R= (L*64-8+16*D)/(8*D);
-	double *A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
+  double *A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
 
   srand ( time ( NULL));
   for(int i=0;i<(R-1)*D+1;i++)
@@ -113,15 +113,15 @@ int main(int argc, char** argv ){
   }
   double gm = geometricMean(mejores,3);
   printf("%d\t%d\t%lf\t",L,D, gm);
+  mhz(1,1);
+  printf("%d\n",R);
 
   for(int i=0;i<N;i++){
     fprintf(stderr, "S[%d]=%lf\n",i,S[i]);
   }
 	//printf("\n Clocks=%1.10lf \n",ck);
 
-	/* Esta rutina imprime a frecuencia de reloxo estimada coas rutinas start_counter/get_counter */
-	mhz(1,1);
-
+	
 
 	_mm_free(A);
 	return EXIT_SUCCESS;
