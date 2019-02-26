@@ -81,7 +81,7 @@ int main(int argc, char** argv ){
   int R;
   if(D>=8) R=L;
   else R=ceil(8*L/D);
-  double *A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
+  double *A=_mm_malloc(((R)*D)*sizeof(double),64);
 
   srand ( time ( NULL));
   for(int i=0;i<(R-1)*D+1;i++)
@@ -107,6 +107,7 @@ int main(int argc, char** argv ){
   //double gm = median(N,ck);//geometricMean(mejores,3);
   printf("%d\t%d\t%lf\t",L,D, ck);
   //mhz(1,1);
+  //sleep(1);
   printf("%d\n",R);
 
   for(int i=0;i<N;i++){
