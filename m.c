@@ -8,12 +8,12 @@
 
 #define S1 512
 #define S2 4096
-#define N 3
+#define N 100
 void start_counter();
 double get_counter();
 double mhz();
 double geometricMean(double arr[], int n);
-
+double median(int n, double x[]);
 
 
 /* Initialize the cycle counter */
@@ -78,7 +78,9 @@ int main(int argc, char** argv ){
     D = atoi(argv[2]);
   }else
     exit(0);
-  int R= (L*64-8+16*D)/(8*D);
+  int R;
+  if(D>=8) R=L;
+  else R=ceil(8*L/D);
   double *A=_mm_malloc(((R-1)*D+1)*sizeof(double),64);
 
   srand ( time ( NULL));
@@ -91,29 +93,20 @@ int main(int argc, char** argv ){
   for(int i=0;i<R;i++){
     E[i]=D*i;
   }
-  double mejores[3]={DBL_MAX,DBL_MAX,DBL_MAX};
+  for(int i=0;i<N;i++)
+  S[i]=0;
+
+  double ck;
+  start_counter();
   for(int i=0;i<N;i++){
-    S[i]=0;
-    start_counter();
     for(int j=0;j<R;j++){
       S[i]=S[i]+A[E[j]];
     }
-    double ck=get_counter()/R;
-    fprintf(stderr, "ck[%d]=%lf\n",i,ck);
-    if(ck<mejores[0]){
-      mejores[2]=mejores[1];
-      mejores[1]=mejores[0];
-      mejores[0]=ck;
-    }else if(ck<mejores[1]){
-      mejores[2]=mejores[1];
-      mejores[1]=ck;
-    }else if(ck<mejores[2]){
-      mejores[2]=ck;
-    }
   }
-  double gm = geometricMean(mejores,3);
-  printf("%d\t%d\t%lf\t",L,D, gm);
-  mhz(1,1);
+  ck=get_counter()/(R*N);
+  //double gm = median(N,ck);//geometricMean(mejores,3);
+  printf("%d\t%d\t%lf\t",L,D, ck);
+  //mhz(1,1);
   printf("%d\n",R);
 
   for(int i=0;i<N;i++){
@@ -121,7 +114,7 @@ int main(int argc, char** argv ){
   }
 	//printf("\n Clocks=%1.10lf \n",ck);
 
-	
+
 
 	_mm_free(A);
 	return EXIT_SUCCESS;
@@ -141,4 +134,25 @@ double geometricMean(double arr[], int n) {
     // to main function.
     double gm = pow(product, (double)1 / n);
     return gm;
+}
+int cmpfunc (const void * a, const void * b)
+{
+  if (*(double*)a > *(double*)b)
+    return 1;
+  else if (*(double*)a < *(double*)b)
+    return -1;
+  else
+    return 0;
+}
+double median(int n, double x[]) {
+    qsort(x,n,sizeof(double), cmpfunc);
+    for(int i=0;i<n;i++)
+	printf("i=%d, %lf\n",i,x[i]);
+    if(n%2==0) {
+        // if there is an even number of elements, return mean of the two elements in the middle
+        return((x[n/2] + x[n/2 - 1]) / 2.0);
+    } else {
+        // else return the element in the middle
+        return x[n/2];
+    }
 }
