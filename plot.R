@@ -1,10 +1,10 @@
-archivo="resSinMhz1k-2.csv"
+archivo="rf10.csv"
 datos <- read.table(file = archivo,header = TRUE,sep = "")
 erres <- read.table(file = "erres.txt",header = TRUE,sep = "")
 #erres
 datos=aggregate(.~L+D,datos, median)
 
-plot(datos$L, datos$resultado,col="white",xlab="Lineas cache (escala log)",main = archivo ,xaxt="n", ylim=c(8,31),log = "x",ylab="Coste en ciclos por acceso")
+plot(datos$L, datos$resultado,col="white",xlab="Lineas cache (escala log)",main = archivo ,xaxt="n", ylim=c(8,31),ylab="Coste en ciclos por acceso")
 axis(1,c(datos$L,c(512,4096)))
 colors = rainbow(6)[c(1,3:6)]
 
