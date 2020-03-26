@@ -1,4 +1,8 @@
 # ArquiCompP1
+Informe sobre o rendemento das memorias cache baixo diferentes supostos de localidade nos programas.
+
+[Informe en PDF](https://github.com/manudroid19/ArquiCompP1/blob/master/informe/Preparation_of_Papers_for_IEEE_Sponsored_Conferences_and_Symposia.pdf)
+
 ## Setting up
 `git clone https://github.com/manudroid19/ApuntesEstructuras.git`
 ## Guia chula de Git
